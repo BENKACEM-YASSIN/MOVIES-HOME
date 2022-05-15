@@ -1,0 +1,16 @@
+{
+   "Version": 1,
+   "ProjectMap": {
+      "655e330c-d210-45e1-87ec-07d4d08c95e2": {
+         "ProjectGuid": "655e330c-d210-45e1-87ec-07d4d08c95e2",
+         "DisplayName": "MoviesHome",
+         "ColorIndex": 0
+      },
+      "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3": {
+         "ProjectGuid": "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3",
+         "DisplayName": "Miscellaneous Files",
+         "ColorIndex": -1
+      }
+   },
+   "NextColorIndex": 1
+}

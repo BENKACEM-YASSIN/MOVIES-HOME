@@ -1,0 +1,34 @@
+﻿@model MoviesHome.Models.User
+
+@{
+    ViewBag.Title = "Login";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="content">
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div>
+            <div>
+                @if (ViewContext.ViewData.ModelState.Count > 0)
+                {
+                    @Html.ValidationSummary()
+                }
+            </div>
+            <div>
+                @Html.LabelFor(model => model.Username)<br />
+                @Html.EditorFor(model => model.Username)
+            </div>
+            <div>
+                @Html.LabelFor(model => model.Password)<br />
+                @Html.PasswordFor(model => model.Password)
+            </div>
+            <div>
+                <input type="submit" value="Login" />
+            </div>
+        </div>
+    }
+</div>
+

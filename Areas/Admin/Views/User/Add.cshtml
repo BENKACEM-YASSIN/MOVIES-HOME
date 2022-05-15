@@ -1,0 +1,46 @@
+﻿@model MoviesHome.Models.User
+
+@{
+    ViewBag.Title = "AddEdit";
+}
+
+<div class="content">
+    <div class="formEdit">
+        @using (Html.BeginForm("Add", "User", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+
+            <h2>@(Model != null ? "Edit User" : "Add User")</h2>
+
+            <div>
+                @Html.ValidationSummary()
+            </div>
+
+            <div>
+                @Html.LabelFor(model => model.Username)
+                @Html.EditorFor(model => model.Username)
+            </div>
+
+            <div>
+                @Html.LabelFor(model => model.Password)
+                @Html.PasswordFor(model => model.Password)
+            </div>
+
+            <div>
+                @Html.Label("Confirm Password")
+                @Html.Password("confirmPassword")
+            </div>
+
+            <div>
+                @Html.LabelFor(model => model.IsActive)
+                @Html.CheckBoxFor(model => model.IsActive)
+            </div>
+
+            <div>
+                <input type="submit" class="btn" value="Save" />
+                <input type="button" class="btn" value="Cancel" />
+            </div>
+        }
+    </div>
+</div>
+

@@ -1,0 +1,149 @@
+﻿@model List<MoviesHome.Models.Movie>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+@using (Html.BeginForm("Index", "Site", FormMethod.Post, htmlAttributes: new { id = "searchForm" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="sidebar">
+        @Html.Label("txtKeyword", "Keyword")<br />
+        @*@Html.TextBox("txtKeyword", Request.Form["txtKeyword"])<br />*@
+        <input type="text" name="txtKeyword" value="@Request.Form["txtKeyword"]" /><br />
+
+        <div>
+            @Html.Label("drpFromYear", "From Year")<br />
+            <select id="drpFromYear" name="drpFromYear">
+                <option value=""></option>
+
+                @for (var i = 1900; i <= DateTime.Now.Year; i++)
+                {
+                    if (Request.Form["drpFromYear"] == i.ToString())
+                    {
+                        <option value="@i" selected="selected">@i</option>
+                    }
+                    else
+                    {
+                        <option value="@i">@i</option>
+                    }
+                }
+            </select><br />
+
+            @Html.Label("drpToYear", "To Year")<br />
+            <select id="drpToYear" name="drpToYear">
+                <option value=""></option>
+                @for (var i = 1900; i <= DateTime.Now.Year; i++)
+                {
+                    if (Request.Form["drpToYear"] == i.ToString())
+                    {
+                        <option value="@i" selected="selected">@i</option>
+                    }
+                    else
+                    {
+                        <option value="@i">@i</option>
+                    }
+                }
+            </select><br />
+        </div>
+
+        <div>
+            @Html.Label("txtRatingFrom", "Rating From")<br />
+            @Html.TextBox("txtRatingFrom", Request.Form["txtRatingFrom"], htmlAttributes: new { type = "number" })<br />
+            @Html.Label("txtRatingTo", "Rating To")<br />
+            @Html.TextBox("txtRatingTo", Request.Form["txtRatingTo"], htmlAttributes: new { type = "number" })<br />
+        </div>
+
+        <br />
+
+        <input type="submit" class="btn" value="Search" />
+        @Html.ActionLink("Clear", "Index", "Site", new {}, htmlAttributes : new { @class = "btn clear" })
+        @*<input type="reset" class="btn clear" value="Clear" />*@
+    </div>
+
+    <div class="content">
+        <div class="actions">
+            <div class="pager">
+                @{
+                    string classActive;
+                    int pageId = Request.QueryString["pageId"] != null ? Convert.ToInt32(Request.QueryString["pageId"]) : 1;
+                    if (pageId != 1)
+                    {
+                        @Html.ActionLink("Previous", "Index", "Site", new { pageId = (pageId - 1).ToString() }, null);
+                    }
+
+                    for (int i = 1; i <= ViewBag.PageCount; i++)
+                    {
+                        if (i == pageId)
+                        {
+                            classActive = "active";
+                        }
+                        else
+                        {
+                            classActive = "";
+                        }
+                        @Html.ActionLink(
+                            linkText: i.ToString(),
+                            actionName: "Index",
+                            controllerName: "Site",
+                            routeValues: new
+                            {
+                                pageId = i.ToString()
+                            },
+                            htmlAttributes: new { @class = classActive }
+                        );
+                    }
+
+                    if (pageId != ViewBag.PageCount && ViewBag.PageCount > 0)
+                    {
+                        @Html.ActionLink("Next", "Index", "Site", new { pageId = (pageId + 1).ToString() }, null);
+                    }
+                }
+            </div>
+
+            <div class="sort">
+                @{
+                    @Html.Label("Sort by :")
+                    @Html.DropDownList(
+                        "drpSort",
+                        (List<SelectListItem>)ViewBag.SortValues,
+                        new { onchange = "document.getElementById('searchForm').submit();" }
+                    );
+                }
+            </div>
+        </div>
+
+        <div class="listing">
+            @{
+                foreach (var movie in Model)
+                {
+                    string colorClass = "green";
+                    if (movie.Rating < 5)
+                    {
+                        colorClass = "red";
+                    }
+                    else if (movie.Rating < 7)
+                    {
+                        colorClass = "yellow";
+                    }
+                    <div class="item">
+                        <div class="image">
+                            <img src="~/Content/images/@movie.Image" alt="@movie.Title" />
+                        </div>
+                        <div class="info">
+                            <div class="rating @colorClass">@movie.Rating.ToString("0.0")</div>
+
+                            <div class="title">
+                                @Html.ActionLink(movie.Title, "Details", "Site", new { Id = movie.Id }, null)
+                            </div>
+                            <div class="date">@Convert.ToDateTime(movie.ReleaseDate).ToString("MMMM dd, yyyy")</div>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+
+        <div class="pager">
+        </div>
+    </div>
+}

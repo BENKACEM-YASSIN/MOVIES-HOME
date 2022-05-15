@@ -1,0 +1,75 @@
+﻿@model List<MoviesHome.Models.Movie>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<div class="content">
+    <div>
+        <a href="/admin/movie/add" class="add">Add Movie</a>
+
+        <table cellspacing="0" cellpadding="4">
+            <tr>
+                <th>Title</th>
+                <th>Duration</th>
+                <th>Country</th>
+                @*<th>&nbsp;</th>*@
+                <th>&nbsp;</th>
+                <th>&nbsp;</th>
+            </tr>
+
+            @foreach (var movie in Model)
+            {
+                <tr>
+                    <td>@movie.Title</td>
+                    <td>@movie.Duration</td>
+                    <td>@movie.Country</td>
+                    @*<td>
+                        <a href='@Url.Action("Edit", "Movie", new { id = movie.Id })'>
+                            <img src="~/Content/images/icons/quick edit.png" />
+                        </a>
+                    </td>*@
+                    <td>
+                        <a href='@Url.Action("Add", "Movie", new { id = movie.Id })'>
+                            <img src="~/Content/images/icons/edit.png" />
+                        </a>
+                    </td>
+                    <td>
+                        <a href='@Url.Action("Delete", "Movie", new { id = movie.Id })' onclick="return confirm('Are you sure you want to delete this movie ?')">
+                            <img src="~/Content/images/icons/delete.png" />
+                        </a>
+                    </td>
+                </tr>
+            }
+
+            <tr>
+                <td colspan="6">
+                    @{
+                        int pageId = Request.QueryString["pageId"] != null ? Convert.ToInt32(Request.QueryString["pageId"]) : 1;
+
+                        for (int i = 1; i <= ViewBag.PageCount; i++)
+                        {
+                            if (i == pageId)
+                            {
+                                <span>@i</span>
+                            }
+                            else
+                            {
+                                @Html.ActionLink(
+                                linkText: i.ToString(),
+                                actionName: "Index",
+                                controllerName: "Movie",
+                                routeValues: new
+                                {
+                                    pageId = i.ToString()
+                                },
+                                htmlAttributes: null
+                            );
+                            }
+                        }
+                    }
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>

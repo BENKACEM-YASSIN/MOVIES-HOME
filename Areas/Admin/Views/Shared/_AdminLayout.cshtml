@@ -1,0 +1,29 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    <link href="~/Content/Admin.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <div class="wrapper">
+        <div class="header">
+            Admin Portal
+        </div>
+        <div class="main">
+            @if (User.Identity.IsAuthenticated)
+            {
+                <div class="sidebar">
+                    @Html.ActionLink("Movies", "Index", "Movie")
+                    @Html.ActionLink("Users", "Index", "User")
+                    @Html.ActionLink("Logout", "Logout", "Site", new { area = "" }, null)
+                </div>
+            }
+
+            @RenderBody()
+        </div>
+        <div class="footer"></div>
+    </div>
+</body>
+</html>

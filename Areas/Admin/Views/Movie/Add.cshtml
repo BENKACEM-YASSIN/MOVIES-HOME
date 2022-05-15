@@ -1,0 +1,64 @@
+﻿@model MoviesHome.Models.Movie
+
+@{
+    ViewBag.Title = "Add/Edit";
+}
+
+<div class="content">
+    <div class="formEdit">
+        @using (Html.BeginForm("Add", "Movie", FormMethod.Post, new { enctype = "multipart/form-data"}))
+        {
+            @Html.AntiForgeryToken()
+
+            <h2>@(Model != null ? "Edit Movie" : "Add Movie")</h2>
+
+            <div>
+                @Html.ValidationSummary()
+            </div>
+
+            <div>
+                @Html.LabelFor(model => model.Title)
+                @Html.TextBoxFor(model => model.Title);
+            </div>
+
+            <div>
+                @Html.LabelFor(model => model.Description)
+                @Html.TextAreaFor(model => model.Description, new { cols = 20, rows = 8 })
+            </div>
+
+            <div>
+                @Html.LabelFor(model => model.Duration)
+                @Html.EditorFor(model => model.Duration)
+            </div>
+
+            <div>
+                @Html.LabelFor(model => model.Image)
+                @if (Model != null)
+                {
+                    <img width="200" src="~/Content/images/@Model.Image" /><br />
+                }
+                @Html.TextBoxFor(model => model.ImageFile, new { type = "file" })
+            </div>
+
+            <div>
+                @Html.LabelFor(model => model.ReleaseDate)
+                @Html.TextBoxFor(model => model.ReleaseDate, "{0:yyyy-MM-dd}", new { type = "date" })
+            </div>
+
+            <div>
+                @Html.LabelFor(model => model.Rating)
+                @Html.TextBoxFor(model => model.Rating)
+            </div>
+
+            <div>
+                @Html.LabelFor(model => model.Country)
+                @Html.TextBoxFor(model => model.Country)
+            </div>
+
+            <div>
+                <input type="submit" class="btn" value="Save" />
+                <input type="button" class="btn" value="Cancel" />
+            </div>
+        }
+    </div>
+</div>
